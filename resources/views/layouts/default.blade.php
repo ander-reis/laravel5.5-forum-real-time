@@ -26,5 +26,8 @@
 @component('layouts.default.body_scripts')
     @yield('scripts')
 @endcomponent
+<script>
+    $('.dropdown-trigger').dropdown();
+</script>
 </body>
 </html>
