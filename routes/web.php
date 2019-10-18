@@ -26,7 +26,12 @@ Route::get('/locale/{locale}', function($locale){
 });
 
 Route::middleware(['auth'])->group(function(){
-    Route::get('/threads', 'ThreadsController@index');
+    Route::get('/threads', 'ThreadsController@index')->name('threads.index');
+    Route::post('/threads', 'ThreadsController@store')->name('threads.store');
+    Route::put('/threads/{thread}', 'ThreadsController@update')->name('threads.update');
+    Route::get('/threads/{thread}/edit', function(\App\Thread $thread){
+        return view('threads.edit', compact('thread'));
+    })->name('threads.edit');
 });
 
 Auth::routes();

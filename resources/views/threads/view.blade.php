@@ -7,6 +7,9 @@
             <div class="card-content">
                 {{ $result->body }}
             </div>
+            <div class="card-action">
+                <a href="{{ route('threads.edit', ['id' => $result->id]) }}">{{ __('Edit') }}</a>
+            </div>
         </div>
 
         <replies
