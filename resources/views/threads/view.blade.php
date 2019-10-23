@@ -8,7 +8,10 @@
                 {{ $result->body }}
             </div>
             <div class="card-action">
-                <a href="{{ route('threads.edit', ['id' => $result->id]) }}">{{ __('Edit') }}</a>
+                @if(\Auth::user()->can('update', $result))
+                    <a href="{{ route('threads.edit', ['id' => $result->id]) }}">{{ __('Edit') }}</a>
+                @endif
+                <a href="/">{{ __('Back') }}</a>
             </div>
         </div>
 

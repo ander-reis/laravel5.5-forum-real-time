@@ -13,7 +13,7 @@
 
 Route::get('/', function () {
     return view('threads.index');
-});
+})->name('home');
 
 Route::get('/threads/{id}', function($id){
     $result = \App\Thread::findOrFail($id);
