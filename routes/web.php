@@ -13,7 +13,7 @@
 
 Route::get('/', function () {
     return view('threads.index');
-});
+})->name('home');
 
 Route::get('/threads/{id}', function($id){
     $result = \App\Thread::findOrFail($id);
@@ -24,3 +24,16 @@ Route::get('/locale/{locale}', function($locale){
     session(['locale' => $locale]);
     return back();
 });
+
+Route::middleware(['auth'])->group(function(){
+    Route::get('/threads', 'ThreadsController@index')->name('threads.index');
+    Route::post('/threads', 'ThreadsController@store')->name('threads.store');
+    Route::put('/threads/{thread}', 'ThreadsController@update')->name('threads.update');
+    Route::get('/threads/{thread}/edit', function(\App\Thread $thread){
+        return view('threads.edit', compact('thread'));
+    })->name('threads.edit');
+});
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

@@ -9,11 +9,11 @@
         <div class="nav-wrapper">
             <div class="container">
                 <a href="" class="brand-logo">{{ __('My Heroes - Forum')  }}</a>
+                <a href="/login" class="btn right">Login</a>
                 <ul class="right">
                     <li>
                         <!-- Dropdown Trigger -->
                         <a class='dropdown-trigger btn' href='#' data-target='dropdown1'>{{ __('Language') }}</a>
-
                     </li>
                 </ul>
             </div>
