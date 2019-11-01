@@ -11,7 +11,7 @@ class RepliesTableSeeder extends Seeder
      */
     public function run()
     {
-        $threads = factory(\App\Thread::class, 50)->create();
+        $threads = factory(\App\Thread::class, 10)->create();
         $threads->each(function($thread){
             factory(\App\Reply::class, rand(5, 10))->create(['thread_id' => $thread->id]);
         });

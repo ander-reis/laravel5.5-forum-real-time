@@ -1,34 +1,13 @@
 <template>
     <div>
-        <div class="card">
+        <div class="card" v-for="data in replies">
             <div class="card-content">
                 <span class="card-title">
-                    Anderson {{ replied }}
+                    {{ data.user.name }} {{ replied }}
                 </span>
                 <blockquote>
-                    teste, teste
-                </blockquote>
-            </div>
-        </div>
+                    {{ data.body }}
 
-        <div class="card">
-            <div class="card-content">
-                <span class="card-title">
-                    Anderson {{ replied }}
-                </span>
-                <blockquote>
-                    teste, teste
-                </blockquote>
-            </div>
-        </div>
-
-        <div class="card">
-            <div class="card-content">
-                <span class="card-title">
-                    Anderson {{ replied }}
-                </span>
-                <blockquote>
-                    teste, teste
                 </blockquote>
             </div>
         </div>
@@ -38,9 +17,9 @@
                 <span class="card-title">
                     {{ reply }}
                 </span>
-                <form action="">
+                <form @submit.prevent="save()">
                     <div class="input-field">
-                        <textarea rows="10" class="materialize-textarea" :placeholder="yourAnswer"></textarea>
+                        <textarea rows="10" class="materialize-textarea" :placeholder="yourAnswer" v-model="reply_to_save.body"></textarea>
                     </div>
                     <button type="submit" class="btn red accent-2">{{ send }}</button>
                 </form>
@@ -56,7 +35,33 @@
             'replied',
             'reply',
             'yourAnswer',
-            'send'
-        ]
+            'send',
+            'threadId'
+        ],
+        data() {
+            return {
+                replies: [],
+                thread_id: this.threadId,
+                reply_to_save: {
+                    body: '',
+                    thread_id: this.thread_id
+                }
+            }
+        },
+        methods: {
+            save() {
+                window.axios.post('/replies', this.reply_to_save).then(() => {
+                    this.getReplies();
+                });
+            },
+            getReplies(){
+                window.axios.get('/replies/' + this.thread_id).then((response) => {
+                    this.replies = response.data;
+                });
+            }
+        },
+        mounted() {
+            this.getReplies();
+        }
     }
 </script>

@@ -32,6 +32,9 @@ Route::middleware(['auth'])->group(function(){
     Route::get('/threads/{thread}/edit', function(\App\Thread $thread){
         return view('threads.edit', compact('thread'));
     })->name('threads.edit');
+
+    Route::get('/replies/{id}', 'RepliesController@show')->name('replies.show');
+    Route::post('/replies', 'RepliesController@store')->name('replies.store');
 });
 
 Auth::routes();
