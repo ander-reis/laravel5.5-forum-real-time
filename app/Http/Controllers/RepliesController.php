@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ReplyRequest;
 use App\Reply;
-use Illuminate\Http\Request;
 
 class RepliesController extends Controller
 {
@@ -16,7 +16,7 @@ class RepliesController extends Controller
         return $replies;
     }
 
-    public function store(Request $request)
+    public function store(ReplyRequest $request)
     {
         $reply = new Reply();
         $reply->body = $request->input('body');

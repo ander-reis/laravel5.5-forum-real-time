@@ -51,7 +51,7 @@ if (token) {
 
 // window.Echo = new Echo({
 //     broadcaster: 'pusher',
-//     key: 'your-pusher-key',
-//     cluster: 'mt1',
+//     key: '73e7d027ef003c33d968',
+//     cluster: 'us2',
 //     encrypted: true
 // });
