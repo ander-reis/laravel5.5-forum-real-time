@@ -801,7 +801,7 @@ window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('replies', __webpack_require__(/*! ./components/Replies */ "./resources/assets/js/replies/components/Replies.vue"));
+Vue.component('replies', __webpack_require__(/*! ./components/Replies */ "./resources/assets/js/replies/components/Replies.vue")["default"]);
 var app = new Vue({
   el: '#app'
 });

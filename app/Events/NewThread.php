@@ -34,6 +34,6 @@ class NewThread implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('new::thread');
+        return new Channel('new.thread' . $this->thread);
     }
 }

@@ -24,8 +24,8 @@ class ThreadsRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required|min:5',
-            'body' => 'required|min:15'
+            'title' => 'required|min:2', //5
+            'body' => 'required|min:2' //15
         ];
     }
 }
