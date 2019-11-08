@@ -44,7 +44,7 @@
                 thread_id: this.threadId,
                 reply_to_save: {
                     body: '',
-                    thread_id: this.thread_id
+                    thread_id: this.threadId
                 }
             }
         },
@@ -62,6 +62,13 @@
         },
         mounted() {
             this.getReplies();
+
+            Echo.channel('new.reply.' + this.thread_id)
+                .listen('NewReply', (e) => {
+                    if(e.reply){
+                        this.getReplies();
+                    }
+                });
         }
     }
 </script>

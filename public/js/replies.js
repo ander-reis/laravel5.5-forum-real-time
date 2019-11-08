@@ -48,7 +48,7 @@ __webpack_require__.r(__webpack_exports__);
       thread_id: this.threadId,
       reply_to_save: {
         body: '',
-        thread_id: this.thread_id
+        thread_id: this.threadId
       }
     };
   },
@@ -69,7 +69,14 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   mounted: function mounted() {
+    var _this3 = this;
+
     this.getReplies();
+    Echo.channel('new.reply.' + this.thread_id).listen('NewReply', function (e) {
+      if (e.reply) {
+        _this3.getReplies();
+      }
+    });
   }
 });
 
