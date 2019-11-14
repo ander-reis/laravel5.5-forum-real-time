@@ -25,15 +25,15 @@ Route::get('/locale/{locale}', function($locale){
     return back();
 });
 
+Route::get('/threads', 'ThreadsController@index')->name('threads.index');
+Route::get('/replies/{id}', 'RepliesController@show')->name('replies.show');
+
 Route::middleware(['auth'])->group(function(){
-    Route::get('/threads', 'ThreadsController@index')->name('threads.index');
     Route::post('/threads', 'ThreadsController@store')->name('threads.store');
     Route::put('/threads/{thread}', 'ThreadsController@update')->name('threads.update');
     Route::get('/threads/{thread}/edit', function(\App\Thread $thread){
         return view('threads.edit', compact('thread'));
     })->name('threads.edit');
-
-    Route::get('/replies/{id}', 'RepliesController@show')->name('replies.show');
     Route::post('/replies', 'RepliesController@store')->name('replies.store');
 });
 

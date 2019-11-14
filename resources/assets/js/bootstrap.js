@@ -55,3 +55,37 @@ window.Echo = new Echo({
     cluster: 'us2',
     encrypted: true
 });
+
+import swal from 'sweetalert2'
+
+const successCallback = (response) => {
+    return response;
+}
+
+const errorCallback = (error) => {
+    if(error.response.status === 401) {
+        swal({
+            title: 'Autenticação',
+            text: 'Para acessar este recurso você precisa estar autenticado!',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Ok!',
+            cancelButtonText: 'Não'
+        }).then((result) => {
+            if(result.value){
+                window.location = '/login';
+            }
+        });
+    } else {
+        swal({
+            title: 'Error',
+            text: 'Algo deu Errado',
+            type: 'error',
+            showCancelButton: false,
+            confirmButtonText: 'Ok!',
+        });
+    }
+    return Promise.reject(error);
+}
+
+window.axios.interceptors.response.use(successCallback, errorCallback);
