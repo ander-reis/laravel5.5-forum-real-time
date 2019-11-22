@@ -20,7 +20,7 @@ class NewThread implements ShouldBroadcast
     /**
      * Create a new event instance.
      *
-     * @return void
+     * @param Thread $thread
      */
     public function __construct(Thread $thread)
     {
@@ -34,6 +34,6 @@ class NewThread implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('new.thread' . $this->thread);
+        return new Channel("thread");
     }
 }

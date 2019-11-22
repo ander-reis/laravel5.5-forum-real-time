@@ -53,7 +53,7 @@ window.Echo = new Echo({
     broadcaster: 'pusher',
     key: '73e7d027ef003c33d968',
     cluster: 'us2',
-    encrypted: true
+    forceTLS: true
 });
 
 import swal from 'sweetalert2'
@@ -89,3 +89,12 @@ const errorCallback = (error) => {
 }
 
 window.axios.interceptors.response.use(successCallback, errorCallback);
+
+window.Vue = require('vue');
+
+// import Vue from 'vue'
+
+Vue.component('loader', require('./commons/AxiosLoader').default);
+const commonApps = new Vue({
+    el: '#loader'
+});
