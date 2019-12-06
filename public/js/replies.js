@@ -39,13 +39,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "replies",
-  props: ['replied', 'reply', 'yourAnswer', 'send', 'threadId'],
+  props: ['replied', 'reply', 'yourAnswer', 'send', 'threadId', 'isClosed'],
   data: function data() {
     return {
       replies: [],
+      logged: window.user || {},
       thread_id: this.threadId,
+      is_closed: this.isClosed,
       reply_to_save: {
         body: '',
         thread_id: this.threadId
@@ -569,77 +573,103 @@ var render = function() {
     "div",
     [
       _vm._l(_vm.replies, function(data) {
-        return _c("div", { staticClass: "card" }, [
-          _c("div", { staticClass: "card-content" }, [
-            _c("span", { staticClass: "card-title" }, [
-              _vm._v(
-                "\n                " +
-                  _vm._s(data.user.name) +
-                  " " +
-                  _vm._s(_vm.replied) +
-                  "\n            "
-              )
+        return _c(
+          "div",
+          {
+            staticClass: "card",
+            class: { "green lighten-4": data.highlighted }
+          },
+          [
+            _c("div", { staticClass: "card-content" }, [
+              _c("span", { staticClass: "card-title" }, [
+                _vm._v(
+                  "\n                " +
+                    _vm._s(data.user.name) +
+                    " " +
+                    _vm._s(_vm.replied) +
+                    "\n            "
+                )
+              ]),
+              _vm._v(" "),
+              _c("blockquote", [
+                _vm._v(
+                  "\n                " + _vm._s(data.body) + "\n            "
+                )
+              ])
             ]),
             _vm._v(" "),
-            _c("blockquote", [
-              _vm._v(
-                "\n                " + _vm._s(data.body) + "\n\n            "
-              )
-            ])
-          ])
-        ])
+            _vm.logged.role === "admin"
+              ? _c("div", { staticClass: "card-action" }, [
+                  _c("a", { attrs: { href: "/reply/highlight/" + data.id } }, [
+                    _vm._v("em destaque")
+                  ])
+                ])
+              : _vm._e()
+          ]
+        )
       }),
       _vm._v(" "),
-      _c("div", { staticClass: "card grey lighten-4" }, [
-        _c("div", { staticClass: "card-content" }, [
-          _c("span", { staticClass: "card-title" }, [
-            _vm._v("\n                " + _vm._s(_vm.reply) + "\n            ")
-          ]),
-          _vm._v(" "),
-          _c(
-            "form",
-            {
-              on: {
-                submit: function($event) {
-                  $event.preventDefault()
-                  return _vm.save()
-                }
-              }
-            },
-            [
-              _c("div", { staticClass: "input-field" }, [
-                _c("textarea", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.reply_to_save.body,
-                      expression: "reply_to_save.body"
-                    }
-                  ],
-                  staticClass: "materialize-textarea",
-                  attrs: { rows: "10", placeholder: _vm.yourAnswer },
-                  domProps: { value: _vm.reply_to_save.body },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.$set(_vm.reply_to_save, "body", $event.target.value)
-                    }
-                  }
-                })
+      _vm.is_closed == 0
+        ? _c("div", { staticClass: "card grey lighten-4" }, [
+            _c("div", { staticClass: "card-content" }, [
+              _c("span", { staticClass: "card-title" }, [
+                _vm._v(
+                  "\n                " + _vm._s(_vm.reply) + "\n            "
+                )
               ]),
               _vm._v(" "),
               _c(
-                "button",
-                { staticClass: "btn red accent-2", attrs: { type: "submit" } },
-                [_vm._v(_vm._s(_vm.send))]
+                "form",
+                {
+                  on: {
+                    submit: function($event) {
+                      $event.preventDefault()
+                      return _vm.save()
+                    }
+                  }
+                },
+                [
+                  _c("div", { staticClass: "input-field" }, [
+                    _c("textarea", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.reply_to_save.body,
+                          expression: "reply_to_save.body"
+                        }
+                      ],
+                      staticClass: "materialize-textarea",
+                      attrs: { rows: "10", placeholder: _vm.yourAnswer },
+                      domProps: { value: _vm.reply_to_save.body },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.reply_to_save,
+                            "body",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn red accent-2",
+                      attrs: { type: "submit" }
+                    },
+                    [_vm._v(_vm._s(_vm.send))]
+                  )
+                ]
               )
-            ]
-          )
-        ])
-      ])
+            ])
+          ])
+        : _vm._e()
     ],
     2
   )

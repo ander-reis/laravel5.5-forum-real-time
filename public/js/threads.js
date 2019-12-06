@@ -50,11 +50,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['title', 'threads', 'replies', 'open', 'newThread', 'threadTitle', 'threadBody', 'send'],
+  props: ['title', 'threads', 'replies', 'open', 'newThread', 'threadTitle', 'threadBody', 'send', 'pin', 'close'],
   data: function data() {
     return {
       threads_response: [],
+      logged: window.user || {},
       threads_to_save: {
         title: '',
         body: ''
@@ -78,14 +81,15 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   mounted: function mounted() {
-    window.Laravel = {
-      'csrfToken': '{{csrf_token()}}'
-    };
+    var _this3 = this;
+
     this.getThreads();
     Echo.channel('thread').listen('NewThread', function (e) {
-      console.log(e); // if(e.thread) {
-      //     this.threads_response.data.splice(0, 0, e.thread);
-      // }
+      console.log(e);
+
+      if (e.thread) {
+        _this3.threads_response.data.splice(0, 0, e.thread);
+      }
     });
   }
 });
@@ -595,17 +599,44 @@ var render = function() {
         _c(
           "tbody",
           _vm._l(_vm.threads_response.data, function(thread) {
-            return _c("tr", [
+            return _c("tr", { class: { "green lighten-4": thread.fixed } }, [
               _c("td", [_vm._v(_vm._s(thread.id))]),
               _vm._v(" "),
               _c("td", [_vm._v(_vm._s(thread.title))]),
               _vm._v(" "),
-              _c("td", [_vm._v("0")]),
+              _c("td", [_vm._v(_vm._s(thread.replies_count || 0))]),
               _vm._v(" "),
               _c("td", [
-                _c("a", { attrs: { href: "/threads/" + thread.id } }, [
-                  _vm._v(_vm._s(_vm.open))
-                ])
+                _c(
+                  "a",
+                  {
+                    staticClass: "btn",
+                    attrs: { href: "/threads/" + thread.id }
+                  },
+                  [_vm._v(_vm._s(_vm.open))]
+                ),
+                _vm._v(" "),
+                _vm.logged.role === "admin"
+                  ? _c(
+                      "a",
+                      {
+                        staticClass: "btn",
+                        attrs: { href: "/thread/pin/" + thread.id }
+                      },
+                      [_vm._v(_vm._s(_vm.pin))]
+                    )
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.logged.role === "admin"
+                  ? _c(
+                      "a",
+                      {
+                        staticClass: "btn",
+                        attrs: { href: "/thread/close/" + thread.id }
+                      },
+                      [_vm._v(_vm._s(_vm.close))]
+                    )
+                  : _vm._e()
               ])
             ])
           }),

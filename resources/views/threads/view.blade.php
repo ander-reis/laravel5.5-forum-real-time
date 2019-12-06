@@ -21,6 +21,7 @@
                 your-answer="{{ __('Your answer') }}"
                 send="{{ __('Send') }}"
                 thread-id="{{ $result->id }}"
+                is-closed="{{ $result->closed }}"
         >
             @include('layouts.default.preloader')
         </replies>

@@ -1,18 +1,20 @@
 <template>
     <div>
-        <div class="card" v-for="data in replies">
+        <div class="card" v-for="data in replies" :class="{'green lighten-4': data.highlighted}">
             <div class="card-content">
                 <span class="card-title">
                     {{ data.user.name }} {{ replied }}
                 </span>
                 <blockquote>
                     {{ data.body }}
-
                 </blockquote>
+            </div>
+            <div class="card-action" v-if="logged.role === 'admin'">
+                <a :href="'/reply/highlight/' + data.id">em destaque</a>
             </div>
         </div>
 
-        <div class="card grey lighten-4">
+        <div class="card grey lighten-4" v-if="is_closed == 0">
             <div class="card-content">
                 <span class="card-title">
                     {{ reply }}
@@ -36,16 +38,19 @@
             'reply',
             'yourAnswer',
             'send',
-            'threadId'
+            'threadId',
+            'isClosed'
         ],
         data() {
             return {
                 replies: [],
+                logged: window.user || {},
                 thread_id: this.threadId,
+                is_closed: this.isClosed,
                 reply_to_save: {
                     body: '',
                     thread_id: this.threadId
-                }
+                },
             }
         },
         methods: {

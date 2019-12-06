@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ThreadsRequest;
+use App\Reply;
 use App\Thread;
 use Illuminate\Http\Request;
 use App\Events\NewThread;
@@ -16,7 +17,9 @@ class ThreadsController extends Controller
      */
     public function index()
     {
-        $threads = Thread::orderBy('updated_at', 'desc')->paginate();
+        $threads = Thread::orderBy('fixed', 'desc')
+            ->orderBy('updated_at', 'desc')
+            ->paginate();
 
         return response()->json($threads);
     }
@@ -25,7 +28,7 @@ class ThreadsController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(ThreadsRequest $request)
     {
@@ -45,7 +48,7 @@ class ThreadsController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Thread  $thread
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function update(ThreadsRequest $request, Thread $thread)
     {
@@ -67,5 +70,31 @@ class ThreadsController extends Controller
     public function destroy(Thread $thread)
     {
         //
+    }
+
+    public function pin(Thread $thread)
+    {
+        $this->authorize('isAdmin', $thread);
+
+        Thread::where([
+            ['id', '!=', $thread->id],
+        ])->update([
+            'fixed' => false
+        ]);
+
+        $thread->fixed = true;
+        $thread->save();
+
+        return redirect('/');
+    }
+
+    public function close(Thread $thread)
+    {
+        $this->authorize('isAdmin', $thread);
+
+        $thread->closed = true;
+        $thread->save();
+
+        return redirect('/');
     }
 }

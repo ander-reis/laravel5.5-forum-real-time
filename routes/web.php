@@ -25,6 +25,9 @@ Route::get('/locale/{locale}', function($locale){
     return back();
 });
 
+Route::get('/login/{provider}', 'SocialAuthController@redirect');
+Route::get('/login/{provider}/callback', 'SocialAuthController@callback');
+
 Route::get('/threads', 'ThreadsController@index')->name('threads.index');
 Route::get('/replies/{id}', 'RepliesController@show')->name('replies.show');
 
@@ -34,9 +37,12 @@ Route::middleware(['auth'])->group(function(){
     Route::get('/threads/{thread}/edit', function(\App\Thread $thread){
         return view('threads.edit', compact('thread'));
     })->name('threads.edit');
+
+    Route::get('reply/highlight/{id}', 'RepliesController@highlight');
+    Route::get('thread/pin/{thread}', 'ThreadsController@pin');
+    Route::get('thread/close/{thread}', 'ThreadsController@close');
+
     Route::post('/replies', 'RepliesController@store')->name('replies.store');
 });
 
 Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');

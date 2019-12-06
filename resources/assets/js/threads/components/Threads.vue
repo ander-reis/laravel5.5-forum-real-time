@@ -12,12 +12,14 @@
                </tr>
                </thead>
                <tbody>
-               <tr v-for="thread in threads_response.data">
+               <tr v-for="thread in threads_response.data" :class="{'green lighten-4': thread.fixed}">
                    <td>{{ thread.id }}</td>
                    <td>{{ thread.title }}</td>
-                   <td>0</td>
+                   <td>{{ thread.replies_count || 0 }}</td>
                    <td>
-                       <a :href="'/threads/' + thread.id">{{ open }}</a>
+                       <a :href="'/threads/' + thread.id" class="btn">{{ open }}</a>
+                       <a :href="'/thread/pin/' + thread.id" class="btn" v-if="logged.role === 'admin'">{{ pin }}</a>
+                       <a :href="'/thread/close/' + thread.id" class="btn" v-if="logged.role === 'admin'">{{ close }}</a>
                    </td>
                </tr>
                </tbody>
@@ -49,11 +51,14 @@
             'newThread',
             'threadTitle',
             'threadBody',
-            'send'
+            'send',
+            'pin',
+            'close'
         ],
         data(){
             return {
                 threads_response: [],
+                logged: window.user || {},
                 threads_to_save: {
                     title: '',
                     body: ''
@@ -77,9 +82,9 @@
 
             Echo.channel('thread').listen('NewThread', (e) => {
                 console.log(e);
-                // if(e.thread) {
-                //     this.threads_response.data.splice(0, 0, e.thread);
-                // }
+                if(e.thread) {
+                    this.threads_response.data.splice(0, 0, e.thread);
+                }
             });
         }
     }
