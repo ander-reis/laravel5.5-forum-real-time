@@ -42,6 +42,9 @@ Route::middleware(['auth'])->group(function(){
     Route::get('thread/pin/{thread}', 'ThreadsController@pin');
     Route::get('thread/close/{thread}', 'ThreadsController@close');
 
+    Route::get('profile', 'ProfileController@edit')->name('profile.edit');
+    Route::post('profile', 'ProfileController@update');
+
     Route::post('/replies', 'RepliesController@store')->name('replies.store');
 });
 
