@@ -30,7 +30,7 @@
                                 <label for="photo" class="col-md-4 control-label">Photo</label>
 
                                 <div class="col-md-6">
-                                    <input id="photo" type="file" class="form-control" name="photo" required>
+                                    <input id="photo" type="file" class="form-control" name="photo">
                                 </div>
                             </div>
 

@@ -1,16 +1,21 @@
 <template>
     <div>
-        <div class="card" v-for="data in replies" :class="{'green lighten-4': data.highlighted}">
-            <div class="card-content">
+        <div class="card horizontal" v-for="data in replies" :class="{'green lighten-4': data.highlighted}">
+            <div class="card-images">
+                <img :src="data.user.photo_url">
+            </div>
+            <div class="card-stacked">
+                <div class="card-content">
                 <span class="card-title">
                     {{ data.user.name }} {{ replied }}
                 </span>
-                <blockquote>
-                    {{ data.body }}
-                </blockquote>
-            </div>
-            <div class="card-action" v-if="logged.role === 'admin'">
-                <a :href="'/reply/highlight/' + data.id">em destaque</a>
+                    <blockquote>
+                        {{ data.body }}
+                    </blockquote>
+                </div>
+                <div class="card-action" v-if="logged.role === 'admin'">
+                    <a :href="'/reply/highlight/' + data.id">em destaque</a>
+                </div>
             </div>
         </div>
 
@@ -21,7 +26,8 @@
                 </span>
                 <form @submit.prevent="save()">
                     <div class="input-field">
-                        <textarea rows="10" class="materialize-textarea" :placeholder="yourAnswer" v-model="reply_to_save.body"></textarea>
+                        <textarea rows="10" class="materialize-textarea" :placeholder="yourAnswer"
+                                  v-model="reply_to_save.body"></textarea>
                     </div>
                     <button type="submit" class="btn red accent-2">{{ send }}</button>
                 </form>
@@ -59,7 +65,7 @@
                     this.getReplies();
                 });
             },
-            getReplies(){
+            getReplies() {
                 window.axios.get('/replies/' + this.thread_id).then((response) => {
                     this.replies = response.data;
                 });
@@ -70,7 +76,7 @@
 
             Echo.channel('new.reply.' + this.thread_id)
                 .listen('NewReply', (e) => {
-                    if(e.reply){
+                    if (e.reply) {
                         this.getReplies();
                     }
                 });

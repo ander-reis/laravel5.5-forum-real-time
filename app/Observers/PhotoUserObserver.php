@@ -5,6 +5,7 @@ namespace App\Observers;
 use App\User;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Image;
 
 class PhotoUserObserver
 {
@@ -49,6 +50,10 @@ class PhotoUserObserver
         $name = 'avatars/' . $name;
 
         $user->photo->storeAs('', $name);
+
+        $img = Image::make($user->photo->getRealPath());
+        $img->fit(250, 250)->save(public_path('/thumb/' . $name));
+
         $user->photo = $name;
     }
 }

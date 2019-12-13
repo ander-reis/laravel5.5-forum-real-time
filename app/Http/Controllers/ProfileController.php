@@ -32,9 +32,11 @@ class ProfileController extends Controller
                 'password' => 'string|min:6|confirmed',
             ]);
 
-            $user->password = $request->input('password');
+            $user->password = bcrypt($request->input('password'));
         }
 
         $user->save();
+
+        return redirect('/');
     }
 }
